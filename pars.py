@@ -2,6 +2,18 @@ import xlsxwriter
 import io
 import re
 
+def count_pidkl(de):
+    de = de.lower()
+    subs1 = "підкл"
+    subs2 = "подкл"
+    if(subs1 in de):
+        return True
+    if(subs2 in de):
+        return True
+    else:
+        return False
+
+
 f = io.open("reqs1.txt", mode="r", encoding="utf-8")
 print(type(f))
 workbook = xlsxwriter.Workbook('rex.xlsx')
@@ -32,6 +44,9 @@ for line in f:
             de_count=1
         elif(re.match(tm_add, line)):
             worksheet.write(row, 1, de.strip())
+            pidkl = count_pidkl(de)
+            if(pidkl):
+                worksheet.write(row, 3, "Заявка на подключение")
             de = ""
             de_count = 0
             status = "id"
